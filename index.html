@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScontiPoste+ UX Design</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #003366;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #ffe500;
+            border-radius: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #003366;
+        }
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .flow-step {
+            flex: 1;
+            min-width: 200px;
+            max-width: 350px;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .flow-step h3 {
+            margin-top: 0;
+            color: #003366;
+        }
+        .flow-step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            font-size: 24px;
+            color: #003366;
+        }
+        .mockup {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        .screen {
+            width: 250px;
+            border: 10px solid #333;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .screen-header {
+            background-color: #ffe500;
+            color: #003366;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+        .screen-content {
+            background-color: white;
+            padding: 15px;
+            height: 450px;
+            overflow: hidden;
+        }
+        .navtab {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ddd;
+        }
+        .navtab-item {
+            text-align: center;
+            font-size: 12px;
+        }
+        .navtab-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 auto 5px;
+        }
+        .map {
+            height: 200px;
+            background-color: #e9f2f9;
+            margin-bottom: 15px;
+            position: relative;
+            border-radius: 5px;
+        }
+        .map-pin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #003366;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .map-pin.active {
+            background-color: #ffe500;
+            border: 2px solid #003366;
+        }
+        .shop-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .shop-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .shop-cashback {
+            color: #00a550;
+            font-weight: bold;
+        }
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background-color: #333;
+            margin: 20px auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .qr-code:before {
+            content: "";
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 50%;
+            height: 50%;
+            background-color: white;
+        }
+        .btn {
+            display: block;
+            padding: 12px 20px;
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            border-radius: 25px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .btn-yellow {
+            background-color: #ffe500;
+            color: #003366;
+        }
+        .notification {
+            background-color: #f8f8f8;
+            border-left: 4px solid #00a550;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .pos-screen {
+            width: 300px;
+            border: 15px solid #555;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .pos-header {
+            background-color: #003366;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        .pos-content {
+            background-color: white;
+            padding: 20px;
+            height: 400px;
+        }
+        .amount-input {
+            border: 2px solid #ddd;
+            padding: 15px;
+            font-size: 24px;
+            text-align: right;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .camera-view {
+            height: 150px;
+            background-color: #333;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 5px;
+        }
+        .receipt {
+            background-color: #f5f5f5;
+            padding: 15px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .discount {
+            color: #00a550;
+        }
+        .total {
+            font-weight: bold;
+            border-top: 1px solid #ddd;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+        .icon-image {
+            width: 60px;
+            height: 60px;
+            background-color: #003366;
+            border-radius: 15px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .flow {
+                flex-direction: column;
+                align-items: center;
+            }
+            .flow-step:not(:last-child):after {
+                content: "↓";
+                right: 50%;
+                top: auto;
+                bottom: -25px;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ScontiPoste+ UX Design</h1>
+            <p>Un sistema di cashback istantaneo per i possessori di carta Postepay</p>
+        </div>
+
+        <div class="section">
+            <h2>Il flusso dell'esperienza cliente</h2>
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="icon-image">1</div>
+                    <h3>Apertura App P</h3>
+                    <p>Il cliente apre l'app unica di Poste Italiane "P" e accede alla sezione ScontiPoste+</p>
+                </div>
+                <div class="flow-step">
+                    <div class="icon-image">2</div>
+                    <h3>Ricerca PDV</h3>
+                    <p>Visualizza sulla mappa i punti vendita che offrono cashback istantaneo</p>
+                </div>
+                <div class="flow-step">
+                    <div class="icon-image">3</div>
+                    <h3>Genera QR Code</h3>
+                    <p>Seleziona il negozio e genera un QR code che viene salvato nell'app</p>
+                </div>
+                <div class="flow-step">
+                    <div class="icon-image">4</div>
+                    <h3>Utilizzo in negozio</h3>
+                    <p>Mostra il QR code al commerciante che lo scansiona tramite app SP+</p>
+                </div>
+                <div class="flow-step">
+                    <div class="icon-image">5</div>
+                    <h3>Conferma pagamento</h3>
+                    <p>Riceve notifica e conferma l'addebito dell'importo scontato su Postepay</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Mockup App Cliente "P"</h2>
+            <div class="mockup">
+                <div class="screen">
+                    <div class="screen-header">App P - Home</div>
+                    <div class="screen-content">
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div style="width: 80px; height: 80px; background-color: #ffe500; border-radius: 20px; margin: 0 auto; display: flex; justify-content: center; align-items: center; color: #003366; font-weight: bold; font-size: 40px;">P</div>
+                            <p style="margin-top: 10px; font-weight: bold;">Ciao, Mario!</p>
+                        </div>
+                        
+                        <div style="background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                            <h3 style="margin-top: 0; font-size: 16px;">Il tuo saldo</h3>
+                            <p style="font-size: 22px; font-weight: bold; margin: 5px 0;">€ 750,40</p>
+                            <p style="font-size: 12px; margin: 0;">Postepay Evolution</p>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div style="text-align: center; width: 30%;">
+                                <div style="width: 40px; height: 40px; background-color: #e1f0ff; border-radius: 50%; margin: 0 auto;"></div>
+                                <p style="font-size: 12px; margin-top: 5px;">Invia</p>
+                            </div>
+                            <div style="text-align: center; width: 30%;">
+                                <div style="width: 40px; height: 40px; background-color: #e1f0ff; border-radius: 50%; margin: 0 auto;"></div>
+                                <p style="font-size: 12px; margin-top: 5px;">Ricarica</p>
+                            </div>
+                            <div style="text-align: center; width: 30%;">
+                                <div style="width: 40px; height: 40px; background-color: #ffe500; border-radius: 50%; margin: 0 auto;"></div>
+                                <p style="font-size: 12px; margin-top: 5px; font-weight: bold;">ScontiPoste+</p>
+                            </div>
+                        </div>
+                        
+                        <h3 style="font-size: 16px;">Servizi rapidi</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <div style="width: 45%; padding: 10px; background-color: #f5f5f5; border-radius: 10px; font-size: 12px;">Bollettini</div>
+                            <div style="width: 45%; padding: 10px; background-color: #f5f5f5; border-radius: 10px; font-size: 12px;">F24</div>
+                            <div style="width: 45%; padding: 10px; background-color: #f5f5f5; border-radius: 10px; font-size: 12px;">Buoni e Libretti</div>
+                            <div style="width: 45%; padding: 10px; background-color: #f5f5f5; border-radius: 10px; font-size: 12px;">Posta</div>
+                        </div>
+                    </div>
+                    <div class="navtab">
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Home</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Servizi</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Profilo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen">
+                    <div class="screen-header">ScontiPoste+</div>
+                    <div class="screen-content">
+                        <h3>Trova negozi con cashback</h3>
+                        <div class="map">
+                            <div class="map-pin" style="top: 30%; left: 40%;"></div>
+                            <div class="map-pin" style="top: 50%; left: 60%;"></div>
+                            <div class="map-pin active" style="top: 70%; left: 30%;"></div>
+                            <div class="map-pin" style="top: 45%; left: 80%;"></div>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" placeholder="Cerca indirizzo o negozio" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                        
+                        <h3>Negozi vicino a te</h3>
+                        <ul class="shop-list">
+                            <li class="shop-item">
+                                <div>
+                                    <strong>Supermercato ABC</strong>
+                                    <p style="margin: 0; font-size: 12px;">Via Roma, 123 - 300m</p>
+                                </div>
+                                <div class="shop-cashback">5%</div>
+                            </li>
+                            <li class="shop-item">
+                                <div>
+                                    <strong>Farmacia Centrale</strong>
+                                    <p style="margin: 0; font-size: 12px;">Via Garibaldi, 45 - 450m</p>
+                                </div>
+                                <div class="shop-cashback">3%</div>
+                            </li>
+                            <li class="shop-item">
+                                <div>
+                                    <strong>ElettroStore</strong>
+                                    <p style="margin: 0; font-size: 12px;">Corso Italia, 78 - 600m</p>
+                                </div>
+                                <div class="shop-cashback">7%</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="navtab">
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Home</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Servizi</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Profilo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen">
+                    <div class="screen-header">Dettaglio Negozio</div>
+                    <div class="screen-content">
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div style="width: 60px; height: 60px; background-color: #f5f5f5; border-radius: 50%; margin: 0 auto;"></div>
+                            <h3 style="margin: 10px 0;">Supermercato ABC</h3>
+                            <p style="margin: 0; font-size: 14px;">Via Roma, 123 - Milano</p>
+                            <div style="background-color: #00a550; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px;">
+                                <strong>5% Cashback</strong>
+                            </div>
+                        </div>
+                        
+                        <div style="background-color: #f5f5f5; border-radius: 10px; padding: 15px; margin: 20px 0;">
+                            <p style="margin: 0; font-size: 14px;"><strong>Orari:</strong> Lun-Sab 9:00-20:00, Dom 10:00-19:00</p>
+                            <p style="margin: 10px 0 0; font-size: 14px;"><strong>Telefono:</strong> 02 1234567</p>
+                        </div>
+                        
+                        <p style="font-size: 14px;">Genera un QR code per ottenere il 5% di cashback istantaneo sul tuo acquisto pagando con Postepay.</p>
+                        
+                        <a href="#" class="btn btn-yellow">Genera QR Code</a>
+                        
+                        <div style="font-size: 12px; text-align: center; margin-top: 20px;">
+                            <p style="margin: 0;">Promozione valida fino al 31/12/2025</p>
+                            <p style="margin: 5px 0 0;">Termini e condizioni</p>
+                        </div>
+                    </div>
+                    <div class="navtab">
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Home</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Servizi</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Profilo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen">
+                    <div class="screen-header">QR Code ScontiPoste+</div>
+                    <div class="screen-content">
+                        <div style="text-align: center; margin: 20px 0;">
+                            <h3>Supermercato ABC</h3>
+                            <div style="background-color: #00a550; color: white; display: inline-block; padding: 5px 15px; border-radius: 20px; margin: 10px 0;">
+                                <strong>5% Cashback</strong>
+                            </div>
+                            
+                            <div class="qr-code">
+                                <div style="color: white;">QR Code</div>
+                            </div>
+                            
+                            <p style="font-size: 14px; margin: -5px 0 15px;">Mostra questo QR code alla cassa</p>
+                            
+                            <div style="background-color: #f5f5f5; border-radius: 10px; padding: 10px; text-align: left;">
+                                <p style="margin: 0; font-size: 14px;"><strong>Come funziona:</strong></p>
+                                <ol style="margin: 10px 0 0; padding-left: 20px; font-size: 13px;">
+                                    <li>Mostra questo QR code alla cassa</li>
+                                    <li>Il commesso lo scannerizza con l'app ScontiPoste+</li>
+                                    <li>Conferma il pagamento scontato sull'app</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="btn">Salvato in "Le mie promo"</a>
+                    </div>
+                    <div class="navtab">
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Home</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Servizi</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Profilo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen">
+                    <div class="screen-header">Notifica di pagamento</div>
+                    <div class="screen-content">
+                        <div class="notification" style="margin-top: 30px;">
+                            <h3 style="margin-top: 0; font-size: 16px;">Conferma pagamento ScontiPoste+</h3>
+                            <p style="margin: 10px 0; font-size: 14px;">Supermercato ABC richiede un pagamento di:</p>
+                            <div style="text-align: center; margin: 20px 0;">
+                                <p style="font-size: 16px; margin: 0; text-decoration: line-through;">€100,00</p>
+                                <p style="font-size: 24px; font-weight: bold; margin: 5px 0; color: #00a550;">€95,00</p>
+                                <p style="font-size: 14px; margin: 0;">Hai risparmiato €5,00 (5%)</p>
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <a href="#" class="btn" style="flex: 1;">Conferma</a>
+                                <a href="#" style="flex: 1; text-align: center; padding: 12px 20px; border: 1px solid #003366; color: #003366; border-radius: 25px; text-decoration: none;">Annulla</a>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px; text-align: center;">
+                            <p style="font-size: 14px;">Carta utilizzata:</p>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <div style="width: 40px; height: 25px; background-color: #ffe500; border-radius: 5px;"></div>
+                                <p style="margin: 0; font-weight: bold;">Postepay Evolution ****4567</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navtab">
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Home</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Servizi</span>
+                        </div>
+                        <div class="navtab-item">
+                            <div class="navtab-icon"></div>
+                            <span>Profilo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Mockup App Commerciante "ScontiPoste+"</h2>
+            <div class="mockup">
+                <div class="pos-screen">
+                    <div class="pos-header">ScontiPoste+ | SmartPOS</div>
+                    <div class="pos-content">
+                        <h3 style="text-align: center; margin-top: 0;">Nuovo Pagamento</h3>
+                        <p style="text-align: center; margin: 5px 0 20px; font-size: 14px;">Inserisci l'importo originale</p>
+                        
+                        <div class="amount-input">€ 100,00</div>
+                        
+                        <div style="display: flex; gap: 10px; margin: 20px 0;">
+                            <a href="#" class="btn" style="flex: 1;">Conferma</a>
+                            <a href="#" style="flex: 1; text-align: center; padding: 12px 20px; border: 1px solid #003366; color: #003366; border-radius: 25px; text-decoration: none;">Annulla</a>
+                        </div>
+                        
+                        <div style="font-size: 14px; text-align: center; margin-top: 20px;">
+                            <p>Supermercato ABC</p>
+                            <p>Via Roma, 123 - Milano</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pos-screen">
+                    <div class="pos-header">ScontiPoste+ | SmartPOS</div>
+                    <div class="pos-content">
+                        <h3 style="text-align: center; margin-top: 0;">Scansiona QR Code</h3>
+                        <p style="text-align: center; margin: 5px 0 20px; font-size: 14px;">Importo: €100,00</p>
+                        
+                        <div class="camera-view">
+                            <p>Camera attiva</p>
+                        </div>
+                        
+                        <p style="text-align: center; font-size: 14px;">Chiedi al cliente di mostrare il QR code generato dall'app P</p>
+                        
+                        <a href="#" style="display: block; text-align: center; margin-top: 20px; color: #003366;">Annulla scansione</a>
+                        
+                        <div style="font-size: 14px; text-align: center; margin-top: 20px;">
+                            <p>Supermercato ABC</p>
+                            <p>Via Roma, 123 - Milano</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pos-screen">
+                    <div class="pos-header">ScontiPoste+ | SmartPOS</div>
+                    <div class="pos-content">
+                        <h3 style="text-align: center; margin-top: 0;">Cashback Applicato</h3>
+                        
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div style="width: 60px; height: 60px; background-color: #00a550; border-radius: 50%; margin: 0 auto; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px;">✓</div>
+                            <p style="margin-top: 10px; font-size: 14px;">QR Code valido per Cashback 5%</p>
+                        </div>
+                        
+                        <div class="receipt">
+                            <div class="receipt-row">
+                                <span>Importo originale:</span>
+                                <span>€100,00</span>
+                            </div>
+                            <div class="receipt-row discount">
+                                <span>Cashback (5%):</span>
+                                <span>-€5,00</span>
+                            </div>
+                            <div class="receipt-row total">
+                                <span>Totale da pagare:</span>
+                                <span>€95,00</span>
+                            </div>
+                        </div>
+                        
+                        <p style="text-align: center; font-size: 14px; margin-top: 20px;">Il cliente riceverà una notifica per confermare il pagamento</p>
+                        
+                        <a href="#" class="btn btn-yellow">Transazione in corso...</a>
+                    </div>
+                </div>
+
+                <div class="pos-screen">
+                    <div class="pos-header">ScontiPoste+ | SmartPOS</div>
+                    <div class="pos-content">
+                        <h3 style="text-align: center; margin-top: 0;">Pagamento Completato</h3>
+                        
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="width: 80px; height: 80px; background-color: #00a550; border-radius: 50%; margin: 0 auto; display: flex; justify-content: center; align-items: center; color: white; font-size: 36px;">✓</div>
+                            <p style="margin-top: 15px; font-size: 18px; font-weight: bold;">Pagamento Accettato</p>
+                            <p style="margin-top: 5px; font-size: 14px;">€95,00 addebitati con successo</p>
+                        </div>
+                        
+                        <div class="receipt">
+                            <div class="receipt-row">
+                                <span>Importo originale:</span>
+                                <span>€100,00</span>
+                            </div>
+                            <div class="receipt-row discount">
+                                <span>Cashback (5%):</span>
+                                <span>-€5,00</span>
+                            </div>
+                            <div class="receipt-row total">
+                                <span>Totale pagato:</span>
+                                <span>€95,00</span>
+                            </div>
+                            <div style="font-size: 12px; margin-top: 10px;">
+                                <p style="margin: 0;">Pagamento Postepay</p>
+                                <p style="margin: 5px 0 0;">ID Transazione: #87654321</p>
+                                <p style="margin: 5px 0 0;">Data: 29/04/2025 - 15:42</p>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="btn">Nuovo Pagamento</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Funzionalità principali</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+                <div style="flex: 1; min-width: 300px; background-color: #f8f8f8; padding: 20px; border-radius: 10px;">
+                    <h3>Per il Cliente</h3>
+                    <ul>
+                        <li>Visualizzazione punti vendita su mappa con percentuale di cashback</li>
+                        <li>Filtro per categoria merceologica o percentuale di cashback</li>
+                        <li>Generazione e salvataggio QR code</li>
+                        <li>Archiviazione promozioni in "Le mie promo"</li>
+                        <li>Notifiche push per conferma pagamento</li>
+                        <li>Storico transazioni con cashback ottenuto</li>
+                        <li>Notifica di buoni sconto in scadenza</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 300px; background-color: #f8f8f8; padding: 20px; border-radius: 10px;">
+                    <h3>Per il Commerciante</h3>
+                    <ul>
+                        <li>Dashboard con statistiche di utilizzo</li>
+                        <li>Impostazione percentuale di cashback</li>
+                        <li>Visualizzazione e gestione promozioni attive</li>
+                        <li>Storico transazioni e report analitici</li>
+                        <li>Modalità operativa semplificata per SmartPOS</li>
+                        <li>Integrazione con sistema di cassa</li>
+                        <li>Gestione profilo punto vendita</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Architettura del Sistema</h2>
+            <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3>Componenti principali</h3>
+                <ul>
+                    <li><strong>App P (Cliente)</strong>: Applicazione mobile per iOS e Android, integrata nell'app unica di Poste Italiane</li>
+                    <li><strong>App ScontiPoste+ (Commerciante)</strong>: Applicazione dedicata per SmartPOS</li>
+                    <li><strong>Backend ScontiPoste+</strong>: Gestisce l'autenticazione, le transazioni e i dati dei PDV</li>
+                    <li><strong>Sistema di Pagamento Postepay</strong>: Elabora le transazioni card-not-present</li>
+                    <li><strong>Database</strong>: Archivia informazioni su PDV, promozioni e transazioni</li>
+                </ul>
+                
+                <h3>Flusso dei dati</h3>
+                <ol>
+                    <li>Il cliente genera un QR code dall'app P</li>
+                    <li>Il QR code contiene un token unico, l'ID cliente e l'ID PDV</li>
+                    <li>Il commerciante scansiona il QR code con l'app ScontiPoste+</li>
+                    <li>L'app ScontiPoste+ invia al backend una richiesta di transazione</li>
+                    <li>Il backend verifica il token e applica il cashback</li>
+                    <li>Il backend invia una richiesta di pagamento al sistema Postepay</li>
+                    <li>Il cliente riceve una notifica push e conferma il pagamento</li>
+                    <li>Il sistema Postepay elabora la transazione e invia conferma al backend</li>
+                    <li>Il backend aggiorna il database e invia conferma alle app</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Considerazioni di Sicurezza</h2>
+            <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <ul>
+                    <li><strong>Autenticazione a due fattori</strong> per accesso alle app</li>
+                    <li><strong>Token di sicurezza</strong> con scadenza breve nei QR code</li>
+                    <li><strong>Crittografia end-to-end</strong> per i dati delle transazioni</li>
+                    <li><strong>Verifica dell'identità</strong> del cliente e del PDV</li>
+                    <li><strong>Protezione antifrode</strong> con analisi comportamentale</li>
+                    <li><strong>Limite massimo</strong> di cashback giornaliero per cliente</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Considerazioni UX</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+                <div style="flex: 1; min-width: 300px; background-color: #f8f8f8; padding: 20px; border-radius: 10px;">
+                    <h3>Accessibilità</h3>
+                    <ul>
+                        <li>Supporto per screen reader</li>
+                        <li>Conformità WCAG 2.1</li>
+                        <li>Modalità ad alto contrasto</li>
+                        <li>Opzioni di ingrandimento del testo</li>
+                        <li>Alternative testuali per elementi visivi</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 300px; background-color: #f8f8f8; padding: 20px; border-radius: 10px;">
+                    <h3>Usabilità</h3>
+                    <ul>
+                        <li>Interfaccia semplice e intuitiva</li>
+                        <li>Feedback visivi e sonori per ogni azione</li>
+                        <li>Tutorial interattivo per primo utilizzo</li>
+                        <li>Tempi di attesa ridotti con feedback visivi</li>
+                        <li>Pulsanti di dimensioni adeguate e ben distanziati</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Prossimi passi</h2>
+            <div style="background-color: #f8f8f8; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <ol>
+                    <li>Test di usabilità con utenti reali</li>
+                    <li>Raccolta feedback e iterazione del design</li>
+                    <li>Implementazione delle funzionalità principali</li>
+                    <li>Pilot test con un gruppo ristretto di PDV</li>
+                    <li>Lancio ufficiale con campagna di marketing</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
