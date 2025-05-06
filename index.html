@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScontiPoste+ - Flusso Compatto</title>
+    <title>ScontiPoste+ - Transazione Card-Not-Present</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -73,41 +73,25 @@
             display: inline-block;
         }
         
-        /* Flow Styles */
-        .flow-container {
+        /* Screens Row */
+        .screens-row {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 25px 0;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding-bottom: 10px;
         }
         
-        .flow-step {
-            flex: 1;
-            min-width: 220px;
-            background-color: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transition: all 0.3s ease;
+        /* Step Styles */
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
-        .flow-step:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .flow-step h4 {
-            font-size: 1rem;
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: var(--poste-blue);
-        }
-        
-        .flow-number {
-            position: absolute;
-            top: -10px;
-            left: -10px;
+        .step-number {
             width: 30px;
             height: 30px;
             background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
@@ -118,48 +102,29 @@
             align-items: center;
             font-weight: bold;
             font-size: 0.9rem;
-            z-index: 2;
+            margin-top: 15px;
+            margin-bottom: 8px;
             box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
         }
         
-        /* App Display Styles */
-        .apps-row {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin: 30px 0;
+        .step-green .step-number {
+            background: linear-gradient(135deg, var(--poste-green) 0%, #00c066 100%);
+            box-shadow: 0 4px 10px rgba(0, 165, 80, 0.2);
         }
         
-        .app-column {
-            flex: 1;
-            min-width: 280px;
-            max-width: 500px;
-        }
-        
-        .app-title {
+        .step-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--poste-blue);
             text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.25rem;
-            color: var(--poste-blue);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            max-width: 130px;
         }
         
-        .app-title i {
-            margin-right: 8px;
-            color: var(--poste-blue);
+        .step-green .step-label {
+            color: var(--poste-green);
         }
         
-        .app-screens {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-        
+        /* Phone Screen Styles */
         .screen {
             width: 130px;
             border: 4px solid #333;
@@ -187,6 +152,46 @@
         .business-screen-header {
             background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
             color: white;
+        }
+        
+        /* App Type Labels */
+        .app-label {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 10;
+            white-space: nowrap;
+        }
+        
+        .app-client {
+            color: var(--poste-blue);
+            border: 2px solid var(--poste-blue);
+        }
+        
+        .app-merchant {
+            color: var(--poste-green);
+            border: 2px solid var(--poste-green);
+        }
+        
+        /* Transition Arrow */
+        .transition-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+        }
+        
+        .arrow-icon {
+            color: var(--poste-blue);
+            font-size: 1.5rem;
+            margin: 0 5px;
         }
         
         /* Inner Screen Elements - App Cliente */
@@ -450,63 +455,158 @@
             font-size: 0.6rem;
         }
         
-        /* Notification */
-        .notification {
+        /* Payment Confirmation */
+        .payment-confirmation {
             padding: 10px;
+            text-align: center;
         }
         
-        .notification-card {
-            background-color: white;
+        .payment-card {
+            background-color: #f5f5f5;
             border-radius: 8px;
             padding: 10px;
-            position: relative;
-            border-left: 3px solid var(--poste-green);
             margin-bottom: 10px;
-            font-size: 0.65rem;
+            border-left: 3px solid var(--poste-blue);
         }
         
-        .notification-title {
+        .payment-title {
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 0.7rem;
             display: flex;
             align-items: center;
-            font-size: 0.7rem;
+            justify-content: center;
         }
         
-        .notification-title i {
-            color: var(--poste-green);
+        .payment-title i {
+            color: var(--poste-blue);
             margin-right: 5px;
         }
         
-        .cashback-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--poste-green);
-            text-align: center;
-            margin: 8px 0;
-        }
-        
-        .new-balance {
-            background-color: var(--poste-light);
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 10px;
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
             font-size: 0.65rem;
         }
         
-        .balance-text {
+        .discounted-price {
+            font-size: 1.2rem;
             font-weight: bold;
             color: var(--poste-blue);
-            margin-bottom: 3px;
         }
         
-        .balance-value {
+        .saved-amount {
+            font-size: 0.65rem;
+            color: var(--poste-green);
+            margin-top: 3px;
+        }
+        
+        .card-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 15px;
+            font-size: 0.65rem;
+        }
+        
+        .card-logo {
+            width: 25px;
+            height: 15px;
+            background-color: var(--poste-yellow);
+            border-radius: 3px;
+        }
+        
+        .confirm-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .btn-confirm-payment {
+            flex: 1;
+            background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            font-size: 0.65rem;
+            text-align: center;
+        }
+        
+        .btn-cancel {
+            flex: 1;
+            border: 1px solid var(--poste-blue);
+            color: var(--poste-blue);
+            padding: 5px 10px;
+            border-radius: 12px;
+            background: white;
+            font-weight: bold;
+            font-size: 0.65rem;
+            text-align: center;
+        }
+        
+        /* Transaction Complete */
+        .transaction-complete {
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--poste-green) 0%, #00c066 100%);
+            border-radius: 50%;
+            margin: 10px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 165, 80, 0.2);
+        }
+        
+        .transaction-title {
             font-weight: bold;
             font-size: 0.8rem;
+            margin: 10px 0;
             color: var(--poste-blue);
         }
         
-        /* Business App Screens */
+        .transaction-details {
+            background-color: var(--poste-light);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.65rem;
+            margin: 15px 0;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            color: var(--poste-blue);
+        }
+        
+        .detail-cashback {
+            color: var(--poste-green);
+            font-weight: bold;
+        }
+        
+        .transaction-id {
+            font-size: 0.55rem;
+            color: #999;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        /* Dashboard */
         .dashboard {
             padding: 8px;
         }
@@ -675,24 +775,38 @@
             margin-bottom: 15px;
         }
         
-        .cashback-display {
-            display: inline-block;
+        .discount-calculation {
+            display: flex;
+            flex-direction: column;
             background-color: var(--poste-light);
             border-radius: 8px;
             padding: 8px 15px;
             margin: 0 auto 15px;
-        }
-        
-        .cashback-label {
+            text-align: left;
             font-size: 0.6rem;
-            color: #999;
-            margin-bottom: 2px;
         }
         
-        .cashback-value {
+        .discount-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+        }
+        
+        .discount-original {
+            font-weight: bold;
+        }
+        
+        .discount-percent {
+            color: var(--poste-green);
+        }
+        
+        .discount-total {
             font-weight: bold;
             font-size: 0.9rem;
-            color: var(--poste-green);
+            color: var(--poste-blue);
+            padding-top: 5px;
+            border-top: 1px dashed #ddd;
+            margin-top: 5px;
         }
         
         .button-row {
@@ -774,197 +888,104 @@
             display: inline-block;
         }
         
-        /* Success Screen */
-        .success-screen {
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .success-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--poste-green) 0%, #00c066 100%);
-            border-radius: 50%;
-            margin: 10px auto;
+        /* Transaction Info Boxes */
+        .info-box-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .success-title {
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin: 8px 0;
-            color: var(--poste-blue);
-        }
-        
-        .receipt {
-            background: linear-gradient(135deg, #f8f9fc 0%, #eef1f5 100%);
-            border-radius: 8px;
-            padding: 8px;
-            margin: 10px 0;
-            font-size: 0.6rem;
-            text-align: left;
-        }
-        
-        .receipt-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3px;
-        }
-        
-        .receipt-value {
-            font-weight: bold;
-            color: var(--poste-blue);
-        }
-        
-        .receipt-cashback {
-            color: var(--poste-green);
-            font-weight: bold;
-        }
-        
-        .receipt-footer {
-            margin-top: 5px;
-            padding-top: 5px;
-            border-top: 1px solid #ddd;
-            font-size: 0.55rem;
-            color: #999;
-        }
-        
-        .success-message {
-            font-size: 0.6rem;
-            margin: 10px 0;
-        }
-        
-        .home-button {
-            background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 12px;
-            border: none;
-            font-weight: bold;
-            font-size: 0.7rem;
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            text-align: center;
-        }
-        
-        /* Process Flow */
-        .process-section {
-            margin-top: 40px;
-        }
-        
-        .process-header {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .process-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--poste-blue);
-            margin-bottom: 5px;
-        }
-        
-        .process-subtitle {
-            font-size: 1rem;
-            color: #666;
-        }
-        
-        .process-flow {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
             margin: 30px 0;
         }
         
-        .process-arrow {
+        .info-box-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-box-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--poste-blue);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            margin: 0 15px;
         }
         
-        .arrow-text {
-            font-size: 0.9rem;
-            font-weight: 600;
+        .info-box-title i {
+            margin-right: 8px;
             color: var(--poste-blue);
-            margin-bottom: 5px;
         }
         
-        .arrow {
-            color: var(--poste-blue);
-            font-size: 2rem;
+        /* Process Flow */
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+            justify-content: center;
         }
         
-        .store-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%);
+        .process-card {
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .process-num {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
+            color: white;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+        }
+        
+        .process-title {
             color: var(--poste-blue);
-            font-size: 1.8rem;
-            margin: 0 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Benefits Section */
-        .benefits {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .benefit-card {
-            flex: 1;
-            min-width: calc(50% - 15px);
-            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%);
-            border-radius: 12px;
-            padding: 15px;
-            position: relative;
-        }
-        
-        .benefit-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--poste-blue) 0%, #0066cc 100%);
-            color: white;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
-        }
-        
-        .benefit-title {
             font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .process-title i {
+            margin-right: 8px;
             color: var(--poste-blue);
         }
         
-        .benefit-desc {
+        .process-desc {
             font-size: 0.9rem;
             color: #666;
         }
         
         /* Media Queries */
         @media (max-width: 768px) {
-            .flow-container {
-                flex-direction: column;
+            .screens-row {
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
-            .benefit-card {
-                min-width: 100%;
+            .transition-arrow {
+                margin: 10px 0;
+            }
+            
+            .arrow-icon {
+                transform: rotate(90deg);
             }
             
             .process-flow {
@@ -972,12 +993,8 @@
                 align-items: center;
             }
             
-            .process-arrow {
-                margin: 15px 0;
-            }
-            
-            .arrow {
-                transform: rotate(90deg);
+            .process-card {
+                max-width: 100%;
             }
         }
     </style>
@@ -986,18 +1003,17 @@
     <div class="container py-4">
         <div class="header">
             <h1>ScontiPoste+</h1>
-            <p>Flusso completo cliente/commerciante per cashback istantaneo</p>
+            <p>Sistema cashback istantaneo con transazione Card-Not-Present</p>
         </div>
 
         <div class="section">
-            <h2 class="mb-3">Flusso Cliente</h2>
-            <div class="app-title">
-                <i class="fas fa-user-circle"></i> App Cliente "P"
-            </div>
+            <h2 class="mb-4">Sequenza Completa</h2>
+            <p style="margin-bottom: 20px;">Il sistema ScontiPoste+ permette di generare una transazione di tipo <strong>"Card-Not-Present"</strong>, simile a un acquisto online, anche se avviata da un punto vendita fisico. Il QR code viene usato per identificare il cliente, il commerciante calcola l'importo scontato, e il pagamento avviene direttamente sulla carta Postepay tramite transazione online.</p>
             
-            <div class="apps-row">
-                <div class="app-screens">
-                    <!-- HOME SCREEN -->
+            <div class="app-label app-client">App Cliente "P"</div>
+            <div class="screens-row">
+                <!-- 1. HOME SCREEN -->
+                <div class="step-container">
                     <div class="screen">
                         <div class="screen-header">Home</div>
                         <div class="screen-content">
@@ -1034,8 +1050,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- MAP SCREEN -->
+                    <div class="step-number">1</div>
+                    <div class="step-label">Apertura App P</div>
+                </div>
+                
+                <!-- 2. MAP SCREEN -->
+                <div class="step-container">
                     <div class="screen">
                         <div class="screen-header">Ricerca PDV</div>
                         <div class="screen-content">
@@ -1070,8 +1090,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- SHOP DETAILS -->
+                    <div class="step-number">2</div>
+                    <div class="step-label">Ricerca PDV con cashback</div>
+                </div>
+                
+                <!-- 3. SHOP DETAILS -->
+                <div class="step-container">
                     <div class="screen">
                         <div class="screen-header">Dettaglio Negozio</div>
                         <div class="screen-content">
@@ -1094,7 +1118,7 @@
                                     </div>
                                 </div>
                                 
-                                <p style="font-size: 0.6rem; margin: 5px 0;">Genera un QR code per ottenere il 10% di cashback istantaneo sul tuo acquisto.</p>
+                                <p style="font-size: 0.6rem; margin: 5px 0;">Genera un QR code per ottenere il 10% di sconto sull'acquisto, pagando con Postepay.</p>
                                 
                                 <button class="btn-generate">
                                     <i class="fas fa-qrcode"></i> Genera QR Code
@@ -1102,8 +1126,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- QR CODE SCREEN -->
+                    <div class="step-number">3</div>
+                    <div class="step-label">Visualizzazione negozio selezionato</div>
+                </div>
+                
+                <!-- 4. QR CODE SCREEN -->
+                <div class="step-container">
                     <div class="screen">
                         <div class="screen-header">QR Code</div>
                         <div class="screen-content">
@@ -1115,111 +1143,32 @@
                                     <div class="qr-code"></div>
                                 </div>
                                 
-                                <p class="qr-help">Mostra questo QR code dopo il pagamento</p>
+                                <p class="qr-help">Mostra questo QR code alla cassa</p>
                                 
                                 <div class="info-box">
                                     <div style="font-weight: bold; margin-bottom: 3px;">Come funziona:</div>
                                     <ol class="qr-steps">
-                                        <li>Effettua il pagamento normalmente</li>
-                                        <li>Mostra questo QR code al commerciante</li>
-                                        <li>Ricevi il cashback sul tuo conto</li>
+                                        <li>Mostra il QR code al commerciante</li>
+                                        <li>Conferma il pagamento scontato</li>
+                                        <li>La transazione avviene online sulla tua Postepay</li>
                                     </ol>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- NOTIFICATION SCREEN -->
-                    <div class="screen">
-                        <div class="screen-header">Notifica</div>
-                        <div class="screen-content">
-                            <div class="notification">
-                                <div class="notification-card">
-                                    <div class="notification-title">
-                                        <i class="fas fa-check-circle"></i> Cashback ricevuto!
-                                    </div>
-                                    <p>Il Chicco d'Oro ti ha accreditato:</p>
-                                    <div class="cashback-amount">€0,35</div>
-                                    <div style="text-align: center; font-size: 0.6rem; color: #999;">Cashback del 10% su €3,50</div>
-                                    
-                                    <div class="new-balance">
-                                        <div class="balance-text">Nuovo saldo Postepay:</div>
-                                        <div class="balance-value">€750,75</div>
-                                    </div>
-                                </div>
-                                
-                                <div style="text-align: center;">
-                                    <div class="qr-container" style="width: 50px; height: 50px;">
-                                        <div class="qr-code qr-used"></div>
-                                    </div>
-                                    <p style="font-size: 0.6rem; color: #999;">QR code utilizzato</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="step-number">4</div>
+                    <div class="step-label">Generazione QR code per identificazione</div>
+                </div>
+                
+                <div class="transition-arrow">
+                    <i class="arrow-icon fas fa-arrow-right"></i>
                 </div>
             </div>
             
-            <div class="flow-container">
-                <div class="flow-step">
-                    <div class="flow-number">1</div>
-                    <h4><i class="fas fa-mobile-alt"></i> Apertura App</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Il cliente apre l'app P e accede alla sezione ScontiPoste+.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">2</div>
-                    <h4><i class="fas fa-map-marker-alt"></i> Ricerca PDV</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Visualizza sulla mappa i punti vendita con cashback.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">3</div>
-                    <h4><i class="fas fa-store"></i> Seleziona negozio</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Sceglie "Il Chicco d'Oro" che offre 10% di cashback.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">4</div>
-                    <h4><i class="fas fa-qrcode"></i> Genera QR</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Crea un QR code personale per il cashback.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">5</div>
-                    <h4><i class="fas fa-shopping-bag"></i> Acquisto</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Acquista un caffè e un cornetto per €3,50 (pagamento normale).</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="process-section">
-            <div class="process-flow">
-                <div class="process-arrow">
-                    <div class="arrow-text">Cliente mostra QR code</div>
-                    <div class="arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                
-                <div class="store-icon">
-                    <i class="fas fa-store"></i>
-                </div>
-                
-                <div class="process-arrow">
-                    <div class="arrow-text">Commerciante scansiona</div>
-                    <div class="arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2 class="mb-3">Flusso Commerciante</h2>
-            <div class="app-title" style="color: var(--poste-green);">
-                <i class="fas fa-store"></i> App Commerciante "ScontiPosteBusiness"
-            </div>
-            
-            <div class="apps-row">
-                <div class="app-screens">
-                    <!-- DASHBOARD SCREEN -->
+            <div class="app-label app-merchant">App Commerciante "ScontiPosteBusiness"</div>
+            <div class="screens-row">
+                <!-- 5. BUSINESS DASHBOARD -->
+                <div class="step-container step-green">
                     <div class="screen">
                         <div class="screen-header business-screen-header">Dashboard</div>
                         <div class="screen-content">
@@ -1229,10 +1178,10 @@
                                     <div class="stats-row">
                                         <div class="stat-box">
                                             <div class="stat-value">42</div>
-                                            <div class="stat-label">Cashback oggi</div>
+                                            <div class="stat-label">Vendite oggi</div>
                                         </div>
                                         <div class="stat-box">
-                                            <div class="stat-value">€56,80</div>
+                                            <div class="stat-value">€256,80</div>
                                             <div class="stat-label">Importo totale</div>
                                         </div>
                                     </div>
@@ -1242,7 +1191,7 @@
                                 <div class="biz-address">Via Roma, 42 - Milano</div>
                                 
                                 <div class="cashback-percentage">
-                                    <div class="percentage-label">Cashback attivo</div>
+                                    <div class="percentage-label">Sconto attivo</div>
                                     <div class="percentage-value">10%</div>
                                 </div>
                                 
@@ -1251,45 +1200,49 @@
                                 </div>
                                 
                                 <div class="transaction-list">
-                                    <div class="transaction-header">Attività recenti</div>
-                                    <div class="transaction-item">
-                                        <div>
-                                            <div class="transaction-name">Mario Rossi</div>
-                                            <div class="transaction-time">Oggi, 10:15</div>
-                                        </div>
-                                        <div class="transaction-amount">
-                                            <div class="amount-cashback">€0,35</div>
-                                            <div class="amount-total">su €3,50</div>
-                                        </div>
-                                    </div>
+                                    <div class="transaction-header">Transazioni recenti</div>
                                     <div class="transaction-item">
                                         <div>
                                             <div class="transaction-name">Giulia Bianchi</div>
                                             <div class="transaction-time">Oggi, 9:42</div>
                                         </div>
                                         <div class="transaction-amount">
-                                            <div class="amount-cashback">€0,60</div>
-                                            <div class="amount-total">su €6,00</div>
+                                            <div class="amount-cashback">€5,40</div>
+                                            <div class="amount-total">da €6,00</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- AMOUNT INPUT SCREEN -->
+                    <div class="step-number">5</div>
+                    <div class="step-label">Apertura app commerciante</div>
+                </div>
+                
+                <!-- 6. AMOUNT INPUT SCREEN -->
+                <div class="step-container step-green">
                     <div class="screen">
-                        <div class="screen-header business-screen-header">Nuovo Cashback</div>
+                        <div class="screen-header business-screen-header">Nuovo Pagamento</div>
                         <div class="screen-content">
                             <div class="amount-screen">
-                                <div class="amount-title">Nuovo Cashback</div>
-                                <div class="amount-subtitle">Inserisci l'importo dell'acquisto</div>
+                                <div class="amount-title">Nuovo Pagamento</div>
+                                <div class="amount-subtitle">Inserisci l'importo originale</div>
                                 
                                 <div class="amount-input">€ 3,50</div>
                                 
-                                <div class="cashback-display">
-                                    <div class="cashback-label">Cashback da erogare (10%)</div>
-                                    <div class="cashback-value">€0,35</div>
+                                <div class="discount-calculation">
+                                    <div class="discount-row">
+                                        <span>Importo originale:</span>
+                                        <span class="discount-original">€3,50</span>
+                                    </div>
+                                    <div class="discount-row">
+                                        <span>Sconto applicato:</span>
+                                        <span class="discount-percent">10%</span>
+                                    </div>
+                                    <div class="discount-row discount-total">
+                                        <span>Totale da pagare:</span>
+                                        <span>€3,15</span>
+                                    </div>
                                 </div>
                                 
                                 <div class="button-row">
@@ -1308,14 +1261,18 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- SCANNER SCREEN -->
+                    <div class="step-number">6</div>
+                    <div class="step-label">Inserimento importo e calcolo sconto</div>
+                </div>
+                
+                <!-- 7. SCANNER SCREEN -->
+                <div class="step-container step-green">
                     <div class="screen">
                         <div class="screen-header business-screen-header">Scansiona QR</div>
                         <div class="screen-content">
                             <div class="scanner-screen">
                                 <div class="amount-title">Scansiona QR Code</div>
-                                <div class="amount-subtitle">Importo: €3,50 | Cashback: €0,35</div>
+                                <div class="amount-subtitle">Importo: €3,15 (sconto 10%)</div>
                                 
                                 <div class="camera-view">
                                     <div class="scan-line"></div>
@@ -1335,17 +1292,120 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- SUCCESS SCREEN -->
+                    <div class="step-number">7</div>
+                    <div class="step-label">Scansione del QR code del cliente</div>
+                </div>
+                
+                <div class="transition-arrow">
+                    <i class="arrow-icon fas fa-arrow-right"></i>
+                </div>
+            </div>
+            
+            <div class="app-label app-client">App Cliente "P" - Conferma Pagamento</div>
+            <div class="screens-row">
+                <!-- 8. PAYMENT CONFIRMATION -->
+                <div class="step-container">
                     <div class="screen">
-                        <div class="screen-header business-screen-header">Cashback Erogato</div>
+                        <div class="screen-header">Conferma Pagamento</div>
+                        <div class="screen-content">
+                            <div class="payment-confirmation">
+                                <div class="payment-card">
+                                    <div class="payment-title">
+                                        <i class="fas fa-credit-card"></i> Conferma pagamento
+                                    </div>
+                                    <p style="font-size: 0.65rem; margin: 5px 0;">Il Chicco d'Oro richiede un pagamento di:</p>
+                                    
+                                    <div class="original-price">€3,50</div>
+                                    <div class="discounted-price">€3,15</div>
+                                    <div class="saved-amount">Risparmi €0,35 (10%)</div>
+                                    
+                                    <div class="card-info">
+                                        <div class="card-logo"></div>
+                                        <span>Postepay Evolution ****4567</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="confirm-buttons">
+                                    <div class="btn-confirm-payment">
+                                        <i class="fas fa-check"></i> Conferma
+                                    </div>
+                                    <div class="btn-cancel">
+                                        <i class="fas fa-times"></i> Annulla
+                                    </div>
+                                </div>
+                                
+                                <div style="font-size: 0.6rem; text-align: center; margin-top: 15px; color: #999;">
+                                    <p style="margin: 0;">La transazione avverrà in modalità Card-Not-Present</p>
+                                    <p style="margin: 0;">come per un acquisto online</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-number">8</div>
+                    <div class="step-label">Conferma pagamento con carta Postepay</div>
+                </div>
+                
+                <!-- 9. TRANSACTION COMPLETE -->
+                <div class="step-container">
+                    <div class="screen">
+                        <div class="screen-header">Transazione</div>
+                        <div class="screen-content">
+                            <div class="transaction-complete">
+                                <div class="success-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                
+                                <div class="transaction-title">Pagamento completato</div>
+                                
+                                <div class="transaction-details">
+                                    <div class="detail-row">
+                                        <span>Importo originale:</span>
+                                        <span>€3,50</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <span>Sconto (10%):</span>
+                                        <span class="detail-cashback">-€0,35</span>
+                                    </div>
+                                    <div class="detail-row" style="font-weight: bold; margin-top: 5px;">
+                                        <span>Totale pagato:</span>
+                                        <span>€3,15</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="transaction-id">
+                                    <div>ID Transazione: #12345678</div>
+                                    <div>Data: 29/04/2025 - 10:15</div>
+                                </div>
+                                
+                                <div style="background-color: #e6f2e9; border-radius: 8px; padding: 8px; margin: 15px 0; text-align: left; font-size: 0.65rem;">
+                                    <div style="font-weight: bold; color: var(--poste-blue); margin-bottom: 3px;">Nuovo saldo Postepay:</div>
+                                    <div style="font-weight: bold; font-size: 0.9rem; color: var(--poste-blue);">€747,25</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-number">9</div>
+                    <div class="step-label">Pagamento completato e aggiornamento saldo</div>
+                </div>
+                
+                <div class="transition-arrow">
+                    <i class="arrow-icon fas fa-arrow-right"></i>
+                </div>
+            </div>
+            
+            <div class="app-label app-merchant">App Commerciante - Conferma</div>
+            <div class="screens-row">
+                <!-- 10. MERCHANT CONFIRMATION -->
+                <div class="step-container step-green">
+                    <div class="screen">
+                        <div class="screen-header business-screen-header">Pagamento Completato</div>
                         <div class="screen-content">
                             <div class="success-screen">
                                 <div class="success-icon">
                                     <i class="fas fa-check"></i>
                                 </div>
                                 
-                                <div class="success-title">Operazione completata</div>
+                                <div class="success-title">Pagamento accettato</div>
                                 
                                 <div class="receipt">
                                     <div class="receipt-row">
@@ -1353,12 +1413,16 @@
                                         <span class="receipt-value">Mario Rossi</span>
                                     </div>
                                     <div class="receipt-row">
-                                        <span>Importo acquisto:</span>
+                                        <span>Importo originale:</span>
                                         <span class="receipt-value">€3,50</span>
                                     </div>
                                     <div class="receipt-row">
-                                        <span>Cashback (10%):</span>
-                                        <span class="receipt-cashback">€0,35</span>
+                                        <span>Sconto (10%):</span>
+                                        <span class="receipt-cashback">-€0,35</span>
+                                    </div>
+                                    <div class="receipt-row" style="font-weight: bold; margin-top: 5px;">
+                                        <span>Totale pagato:</span>
+                                        <span>€3,15</span>
                                     </div>
                                     <div class="receipt-footer">
                                         <div>ID: #12345678</div>
@@ -1366,96 +1430,91 @@
                                     </div>
                                 </div>
                                 
-                                <div class="success-message">Il cliente ha ricevuto una notifica e il cashback è stato accreditato sul suo conto Postepay</div>
-                                
-                                <div class="home-button">
-                                    <i class="fas fa-home"></i> Torna alla home
+                                <div class="success-message">
+                                    La transazione Card-Not-Present è stata completata con successo
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="flow-container">
-                <div class="flow-step">
-                    <div class="flow-number">1</div>
-                    <h4><i class="fas fa-home"></i> Dashboard</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Il commerciante visualizza la dashboard e avvia una nuova operazione.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">2</div>
-                    <h4><i class="fas fa-euro-sign"></i> Importo</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Inserisce l'importo speso dal cliente (€3,50) e visualizza il cashback (€0,35).</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">3</div>
-                    <h4><i class="fas fa-qrcode"></i> Scansione</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Scansiona il QR code mostrato dal cliente tramite la fotocamera.</p>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-number">4</div>
-                    <h4><i class="fas fa-check-circle"></i> Conferma</h4>
-                    <p style="font-size: 0.8rem; margin: 0;">Riceve conferma dell'erogazione del cashback sul conto del cliente.</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="process-section">
-            <div class="process-flow">
-                <div class="process-arrow">
-                    <div class="arrow-text">Cashback accreditato</div>
-                    <div class="arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                
-                <div class="store-icon" style="background: linear-gradient(135deg, var(--poste-green) 0%, #00c066 100%); color: white;">
-                    <i class="fas fa-euro-sign"></i>
-                </div>
-                
-                <div class="process-arrow">
-                    <div class="arrow-text">Notifica ricevuta</div>
-                    <div class="arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
+                    <div class="step-number">10</div>
+                    <div class="step-label">Conferma dell'avvenuto pagamento</div>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <h2 class="mb-4">Vantaggi del sistema</h2>
-            <div class="benefits">
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
+            <h2 class="mb-4">Come funziona la transazione Card-Not-Present</h2>
+            
+            <div class="info-box-container">
+                <div class="info-box-card">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i> Cosa significa "Card-Not-Present"?
                     </div>
-                    <div class="benefit-title">Immediatezza</div>
-                    <div class="benefit-desc">Cashback accreditato all'istante sul conto Postepay, senza attese.</div>
+                    <p>Una transazione Card-Not-Present (CNP) è una transazione di pagamento in cui la carta fisica non è presente al momento dell'acquisto. Tipicamente avviene negli acquisti online, dove la carta non viene fisicamente inserita in un terminale POS.</p>
                 </div>
                 
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-credit-card"></i>
+                <div class="info-box-card">
+                    <div class="info-box-title">
+                        <i class="fas fa-cogs"></i> Come funziona nel sistema ScontiPoste+
                     </div>
-                    <div class="benefit-title">Flessibilità pagamento</div>
-                    <div class="benefit-desc">Compatibile con qualsiasi metodo di pagamento (contanti, carte, ecc.).</div>
+                    <p>Nel sistema ScontiPoste+, anche se cliente e commerciante si trovano fisicamente nello stesso punto vendita, la transazione avviene come se fosse un acquisto online. Il QR code identifica il cliente e la sua carta Postepay, il commerciante calcola l'importo scontato, e il pagamento viene elaborato digitalmente attraverso il sistema Postepay, senza utilizzare fisicamente la carta.</p>
+                </div>
+            </div>
+            
+            <div class="process-flow">
+                <div class="process-card">
+                    <div class="process-num">1</div>
+                    <div class="process-title">
+                        <i class="fas fa-qrcode"></i> Identificazione
+                    </div>
+                    <div class="process-desc">
+                        Il QR code generato dall'app P contiene le informazioni di identificazione del cliente e della sua carta Postepay.
+                    </div>
                 </div>
                 
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-mobile-alt"></i>
+                <div class="process-card">
+                    <div class="process-num">2</div>
+                    <div class="process-title">
+                        <i class="fas fa-calculator"></i> Calcolo sconto
                     </div>
-                    <div class="benefit-title">Accessibilità</div>
-                    <div class="benefit-desc">Per i commercianti basta uno smartphone, senza necessità di terminali costosi.</div>
+                    <div class="process-desc">
+                        Il commerciante inserisce l'importo originale e il sistema calcola automaticamente l'importo scontato da addebitare.
+                    </div>
                 </div>
                 
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <i class="fas fa-shield-alt"></i>
+                <div class="process-card">
+                    <div class="process-num">3</div>
+                    <div class="process-title">
+                        <i class="fas fa-check-circle"></i> Autorizzazione
                     </div>
-                    <div class="benefit-title">Sicurezza</div>
-                    <div class="benefit-desc">Token a scadenza breve e sistema antifrode integrato per massima protezione.</div>
+                    <div class="process-desc">
+                        Il cliente riceve una notifica push e conferma l'addebito sull'app, autorizzando la transazione come farebbe per un acquisto online.
+                    </div>
+                </div>
+                
+                <div class="process-card">
+                    <div class="process-num">4</div>
+                    <div class="process-title">
+                        <i class="fas fa-exchange-alt"></i> Elaborazione
+                    </div>
+                    <div class="process-desc">
+                        La transazione viene elaborata dal sistema Postepay come una transazione online, addebitando l'importo scontato sulla carta del cliente.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box-container">
+                <div class="info-box-card">
+                    <div class="info-box-title">
+                        <i class="fas fa-shield-alt"></i> Vantaggi del sistema
+                    </div>
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Processo semplificato:</strong> Il cliente non deve presentare fisicamente la carta o inserire PIN</li>
+                        <li><strong>Sconto immediato:</strong> Lo sconto viene applicato direttamente al momento del pagamento</li>
+                        <li><strong>Sicurezza:</strong> Il cliente conferma personalmente la transazione tramite l'app</li>
+                        <li><strong>Integrazione completa:</strong> L'intero processo avviene all'interno dell'ecosistema Poste Italiane</li>
+                        <li><strong>Flessibilità:</strong> Il sistema funziona con qualsiasi commerciante dotato di smartphone e app dedicata</li>
+                    </ul>
                 </div>
             </div>
         </div>
